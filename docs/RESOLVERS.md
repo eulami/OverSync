@@ -127,6 +127,9 @@ docker build -t oversync-resolver .
 docker run --rm --env-file ../.env oversync-resolver run
 ```
 
+The image runs as the unprivileged `node` user (uid/gid 1000), never as root —
+keep it that way when overriding the entrypoint.
+
 ## 4. Withdraw
 
 If you stop running the resolver, withdraw your stake:

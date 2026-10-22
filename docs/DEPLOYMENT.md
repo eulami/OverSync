@@ -133,6 +133,19 @@ node dist/index.js register   # stake into the registry
 node dist/index.js run        # listen + react to events
 ```
 
+### Container runtime user
+
+The resolver and relayer images both run as the unprivileged `node` user
+(uid/gid 1000) provided by their Alpine base image. Their runtime stages set
+`USER node` and copy build output with `--chown=node:node`, so the process
+never starts as root. `/app` is owned by that user, so the relayer can keep
+writing its event history and relay submissions there as before.
+
+Do not override `USER` or pass `--user 0` when running these images. Publish
+container ports instead of binding privileged host ports. `pnpm
+check:container-hardening` statically inspects both Dockerfiles and fails if a
+runtime stage would run as root; CI runs it with the repository checks.
+
 ## 6. Deploy the frontend
 
 ```bash

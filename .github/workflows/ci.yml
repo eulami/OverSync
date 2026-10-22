@@ -36,6 +36,9 @@ jobs:
       - name: Test repository scripts
         run: pnpm test:scripts
 
+      - name: Check container hardening
+        run: pnpm check:container-hardening
+
       - name: Validate deployment JSON
         run: pnpm validate:deployments
 
